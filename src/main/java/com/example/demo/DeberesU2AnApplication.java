@@ -1,13 +1,18 @@
 package com.example.demo;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.example.demo.manytomany.modelo.Cliente;
+import com.example.demo.manytomany.modelo.Vehiculo;
+import com.example.demo.manytomany.service.IVehiculoService;
 import com.example.demo.unoauno.modelo.Especialista;
 import com.example.demo.unoauno.modelo.Medico;
 import com.example.demo.unoauno.service.IMedicoService;
@@ -24,6 +29,9 @@ public class DeberesU2AnApplication implements CommandLineRunner {
 	@Autowired
 	private ICasaService casaService;
 	
+	@Autowired
+	private IVehiculoService vehiculoService;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(DeberesU2AnApplication.class, args);
 	}
@@ -34,47 +42,35 @@ public class DeberesU2AnApplication implements CommandLineRunner {
 		
 		//CRUD
 		//CREATE
-		Casa casa = new Casa();
-		casa.setDireccion("Av. Colon y Av. 6 de diciembre");
-		casa.setNumeroHabitaciones(3);
+		Vehiculo vehi = new Vehiculo();
+		vehi.setNumeroPuertas(5);
+		vehi.setPlaca("IBR-2479");
+		vehi.setTipoDireccion("hidraulica");
+		vehi.setTraccion("4x2");
 		
-		Ventana vent1 = new Ventana();
-		vent1.setAlto(42.3);
-		vent1.setAncho(30.2);
-		vent1.setCasa(casa);
-		vent1.setTipoCristal("Laminado");
+		Cliente clie = new Cliente();
+		clie.setCedula("1151561532");
+		clie.setNombre("Mauricio");
+		clie.setApellido("Torres");
+		clie.setEdad(28);
 		
-		Ventana vent2 = new Ventana();
-		vent2.setAlto(42.3);
-		vent2.setAncho(20.5);
-		vent2.setCasa(casa);
-		vent2.setTipoCristal("translucido");
+		Cliente clie1 = new Cliente();
+		clie1.setCedula("321385132");
+		clie1.setNombre("Carlos");
+		clie1.setApellido("Fuentes");
+		clie1.setEdad(31);
 		
-		Ventana vent3 = new Ventana();
-		vent3.setAlto(42.3);
-		vent3.setAncho(20.5);
-		vent3.setCasa(casa);
-		vent3.setTipoCristal("Laminado");
 		
-		List<Ventana> ventanas = new ArrayList<>();
-		ventanas.add(vent1);
-		ventanas.add(vent2);
-		ventanas.add(vent3);	
 		
-		casa.setVentana(ventanas);
+		Set<Cliente>clientes = new HashSet<>();
+		clientes.add(clie);
+		clientes.add(clie1);		
 		
-		this.casaService.guardar(casa);
+		vehi.setClientes(clientes);
 		
-		//READ
-		this.casaService.buscar(1);
+		this.vehiculoService.guardar(vehi);
 		
-		//UPDATE
-		Casa casaT = this.casaService.buscar(3);
-		casaT.setNumeroHabitaciones(2);
-		this.casaService.modificar(casaT);
 		
-		//DELETE
-		this.casaService.borrar(2);
 	}
 
 }
